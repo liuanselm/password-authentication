@@ -1,0 +1,8 @@
+{
+    "liveServer.settings.https": {
+        "enable": true,
+        "cert": "C:/Users/Anselm/Documents/Git/password-authentication/https/server.crt",
+        "key": "C:/Users/Anselm/Documents/Git/password-authentication/https/server.key",
+        "passphrase": "12345"
+    }
+}
