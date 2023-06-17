@@ -1,11 +1,12 @@
-function signin() {
-  
+function signin(username, password) {
+  const signinRequestBody = JSON.stringify({ user: username, password });
   const signinRequestOptions = {
     method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-    }
+    },
+    body: signinRequestBody
   };
   
   fetch('https://localhost:3000/signin', signinRequestOptions)

@@ -46,7 +46,8 @@ app.get("/", function(req, res){
 
 })
 app.post("/signup", async (req,res)=>{
-  const { password, user } = req.body;
+  const { password, user} = req.body;
+  console.log(password, user)
   try {
     const hashedPassword = await hash(password);
     await upload(hashedPassword, user);
@@ -57,9 +58,18 @@ app.post("/signup", async (req,res)=>{
     res.status(500).send({ upload: false });
   }
 })
-app.post("/signin", function(req,res){
-	req.session.name = req.sessionID
-	return res.send(req.session)
+app.post("/signin", async(req,res)=>{
+	const { password, user } = req.body;
+  console.log(password, user)
+  try{
+    const hashedPassword = await getHash(user)
+    await confirmHash(password, hashedPassword)
+    req.session.name = user
+    res.send(req.session)
+  }catch(error){
+    console.error('Error:', error);
+    res.status(500).send({ signin: false });
+  }
 })
 app.post("/signout", function(req,res){
 	req.session.destroy()
