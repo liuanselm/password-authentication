@@ -12,15 +12,16 @@ function signin(username, password) {
   fetch('https://localhost:3000/signin', signinRequestOptions)
     .then(response => response.json())
     .then(data => {
-      console.log(data); 
+      console.log(data)
+      window.location.href = 'signedin.html'
   })
   .catch(error => {
     console.error('Error:', error);
     });
   }
 
-function signup(username, password) {
-  const signupRequestBody = JSON.stringify({ user: username, password });
+function signup(email, username, password) {
+  const signupRequestBody = JSON.stringify({email, user: username, password });
   const signupRequestOptions = {
     method: 'POST',
     credentials: 'include',
@@ -33,7 +34,8 @@ function signup(username, password) {
   fetch('https://localhost:3000/signup', signupRequestOptions)
     .then(response => response.json())
     .then(data => {
-      console.log(data); 
+      console.log(data);
+      window.location.href = 'verify.html' 
   })
   .catch(error => {
     console.error('Error:', error);
@@ -51,7 +53,14 @@ function session() {
   fetch('https://localhost:3000/session', sessionRequestOptions)
     .then(response => response.json())
     .then(data => {
-      console.log(data); 
+      if (data.verified === false){
+        window.location.href = 'verify.html'
+      }
+      else{
+        console.log(data); 
+        document.getElementById('apikey').textContent = data.apikey
+        document.getElementById('secretkey').textContent = data.secretkey
+      }
   })
   .catch(error => {
     console.error('Error:', error);
@@ -71,7 +80,29 @@ function signout() {
   fetch('https://localhost:3000/signout', signoutRequestOptions)
     .then(response => response.json())
     .then(data => {
-      console.log(data); 
+      console.log(data);
+      window.location.href = 'client.html' 
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    });
+  }
+
+function verify(id) {
+  const verifyRequestBody = JSON.stringify({ verify: id});
+  const verifyRequestOptions = {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: verifyRequestBody
+  };
+      
+  fetch('https://localhost:3000/verify', verifyRequestOptions)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
   })
   .catch(error => {
     console.error('Error:', error);
